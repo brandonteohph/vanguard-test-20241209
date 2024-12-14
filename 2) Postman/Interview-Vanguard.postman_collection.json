@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "fb8b6d89-eeb2-4303-b857-ea5e4df28023",
+		"name": "Interview-Vanguard",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Import API",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/brand/Desktop/Interview-Vanguard/vanguard-test-20241209/test-payloads/test-sample-1000000 rows.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/import",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"import"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetGameSales API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/getGameSales?page=1&size=1&from=2024-04-10&to=2024-04-12&priceMode=LESS_THAN&price=20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"getGameSales"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "1"
+						},
+						{
+							"key": "from",
+							"value": "2024-04-10"
+						},
+						{
+							"key": "to",
+							"value": "2024-04-12"
+						},
+						{
+							"key": "priceMode",
+							"value": "LESS_THAN"
+						},
+						{
+							"key": "price",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTotalSales API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/getTotalSales",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"getTotalSales"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
