@@ -24,4 +24,20 @@ public interface VgRecordGameSaleProcedureRepository extends JpaRepository<VgRec
                     @Param("size") Integer size
             );
 
+    @Procedure(procedureName = "vg_sp_game_sales_count_by_date_range_and_game_no")
+    List<Long> getGameSalesCount
+            (
+                    @Param("from_date") Date fromDate,
+                    @Param("to_date") Date toDate,
+                    @Param("game_no_req") Integer gameNoReq
+            );
+
+
+    @Procedure(procedureName = "vg_sp_game_sales_rev_by_date_range_and_game_no")
+    List<BigDecimal> getGameSalesRev
+            (
+                    @Param("from_date") Date fromDate,
+                    @Param("to_date") Date toDate,
+                    @Param("game_no_req") Integer gameNoReq
+            );
 }

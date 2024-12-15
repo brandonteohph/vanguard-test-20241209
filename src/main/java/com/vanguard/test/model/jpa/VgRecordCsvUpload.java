@@ -14,6 +14,8 @@ public class VgRecordCsvUpload {
     private Long id;
     @Column(name = "name_of_file")
     private String nameOfFile;
+    @Column(name = "transaction_id")
+    private String transactionId;
     @Column(name = "datetime_upload_start")
     private Timestamp datetimeUploadStart;
     @Column(name = "datetime_upload_end")

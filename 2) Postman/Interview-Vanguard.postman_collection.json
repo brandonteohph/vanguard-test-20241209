@@ -85,7 +85,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/getTotalSales",
+					"raw": "http://localhost:8080/getTotalSales?type=SALES&from=2024-04-04&to=2024-04-30&gameNo=2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -93,6 +93,24 @@
 					"port": "8080",
 					"path": [
 						"getTotalSales"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "SALES"
+						},
+						{
+							"key": "from",
+							"value": "2024-04-04"
+						},
+						{
+							"key": "to",
+							"value": "2024-04-30"
+						},
+						{
+							"key": "gameNo",
+							"value": "2"
+						}
 					]
 				}
 			},

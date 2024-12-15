@@ -1,4 +1,4 @@
-drop view vg_view_game_sales_count_by_date;
+drop view if exists vg_view_game_sales_count_by_date;
 CREATE VIEW vg_view_game_sales_count_by_date AS
 	select
 		CAST(date_of_sale AS DATE) as ag_date_of_sale,

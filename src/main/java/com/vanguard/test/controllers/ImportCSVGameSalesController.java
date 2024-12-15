@@ -7,6 +7,7 @@ import com.vanguard.test.model.jpa.VgRecordGameSale_CSV;
 import com.vanguard.test.repository.VgRecordCsvUploadRepository;
 import com.vanguard.test.repository.VgRecordGameSaleRepository;
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -38,18 +40,16 @@ public class ImportCSVGameSalesController {
     public ResponseEntity<String> uploadCsvFile(@RequestParam(value = "file", required = false) @Valid final MultipartFile file) throws IOException {
         // first validation - is the file empty?
         if (file.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is empty");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error - File is empty");
         }
-
-        // TODO do rest of validations here
-
 
         CsvMapper csvMapper = new CsvMapper();
 
         // start import
         // 1) save first record of of the timing
         VgRecordCsvUpload vgRecordCsvUpload = new VgRecordCsvUpload();
-        vgRecordCsvUpload.setNameOfFile(file.getName());
+        vgRecordCsvUpload.setNameOfFile(file.getOriginalFilename());
+        vgRecordCsvUpload.setTransactionId(UUID.randomUUID().toString());
         vgRecordCsvUpload.setDatetimeUploadStart(new Timestamp(System.currentTimeMillis())); // this follows the current system millis, should be ok for containerization
         vgRecordCsvUploadRepository.save(vgRecordCsvUpload);
 
@@ -57,7 +57,6 @@ public class ImportCSVGameSalesController {
         Long numberOfRows = 0L;
         Long totalUploadTimeMs = 0L;
         Long startTimeOfFlush = 0L;
-        int batch_size = 1000;
 
         // 2) begin import
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
@@ -65,7 +64,10 @@ public class ImportCSVGameSalesController {
             String readFirstLine = reader.readLine();
             // do validation of the first line!!
             log.info("Skipping first line: {}", readFirstLine);
-            // TODO
+            if (!StringUtils.containsIgnoreCase(readFirstLine, "id,game_no,game_name,game_code,type,cost_price,tax,sale_price,date_of_sale")) {
+                throw new ValidationException("First line header is invalid (TransactionId: " + vgRecordCsvUpload.getTransactionId() + ") - must be "
+                        + "id,game_no,game_name,game_code,type,cost_price,tax,sale_price,date_of_sale");
+            }
 
             startTimeOfFlush = System.currentTimeMillis();
             log.info("StartTime: {}", new Timestamp(startTimeOfFlush));
@@ -99,20 +101,22 @@ public class ImportCSVGameSalesController {
             log.info("flushing");
             vgRecordGameSaleRepository.saveAllAndFlush(entityList);
 
-            log.info("Saved {} rows to VgRecordGameSale table", numberOfRows);
+            log.info("Saved {} rows to VgRecordGameSale table, transactionId: {}", numberOfRows, vgRecordCsvUpload.getTransactionId());
 
             long endTimeOfFlush = System.currentTimeMillis();
             log.info("EndTime: {}", new Timestamp(endTimeOfFlush));
             totalUploadTimeMs = endTimeOfFlush - startTimeOfFlush;
             log.info("totalUploadTimeMs: {}", totalUploadTimeMs);
 
-        } catch (IOException e) {
-            log.error("Something went wrong with the CSV import - IOException:", e);
+        }
+
+        catch (Exception e) {
+            log.error("Something went wrong with the CSV import (TransactionId: {}) - {}: {}:", vgRecordCsvUpload.getTransactionId(), e.getClass(), e.getMessage());
 
             long endTimeError = System.currentTimeMillis();
-            log.info("EndTime upon error: {}", new Timestamp(endTimeError));
+            log.error("EndTime upon {}: {}", e.getClass(), new Timestamp(endTimeError));
             totalUploadTimeMs = endTimeError - startTimeOfFlush;
-            log.info("totalUploadTimeMs upon error: {}", totalUploadTimeMs);
+            log.error("totalUploadTimeMs upon {}: {}", e.getClass(), totalUploadTimeMs);
 
 
             vgRecordCsvUpload.setDatetimeUploadEnd(new Timestamp(System.currentTimeMillis()));
@@ -121,7 +125,7 @@ public class ImportCSVGameSalesController {
             vgRecordCsvUploadRepository.saveAndFlush(vgRecordCsvUpload);
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error while reading the CSV file.");
+                    .body("Error while reading the CSV file - exception thrown: " + e.getMessage());
         }
 
         vgRecordCsvUpload.setDatetimeUploadEnd(new Timestamp(System.currentTimeMillis()));
@@ -133,21 +137,7 @@ public class ImportCSVGameSalesController {
 
 
         // return correct/wrong
-        return ResponseEntity.ok("CSV file uploaded and processed successfully.");
-//
-//        try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
-//            List<String[]> records = reader.readAll();
-//            // Process CSV records here, for example, print to console or save to database
-//            for (String[] record : records) {
-//                System.out.println(record);
-//                System.out.println(String.join("|", record));  // Just print for demonstration
-//            }
-//            return ResponseEntity.ok("CSV file uploaded and processed successfully.");
-//        } catch (IOException e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body("Error while reading the CSV file.");
-//        } catch (CsvException e) {
-//            throw new RuntimeException(e);
-//        }
+        return ResponseEntity.ok("CSV file uploaded and processed successfully. Total Rows inserted: " + numberOfRows + ", TransactionId: " + vgRecordCsvUpload.getTransactionId());
+
     }
 }

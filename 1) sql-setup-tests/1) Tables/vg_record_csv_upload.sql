@@ -9,5 +9,6 @@ CREATE TABLE `vg_record_csv_upload` (
   `total_time_ms` bigint DEFAULT NULL,
   `success_description` varchar(255) DEFAULT NULL,
   `number_of_rows` bigint DEFAULT NULL,
+  `transaction_id` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
