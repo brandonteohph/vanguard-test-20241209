@@ -21,7 +21,7 @@
 2. Ensure your environment variables have the mvnw executable path
 3. Open Windows Powershell.
 4. cd to the repository root folder (`vanguard-test-20241209`)
-6. run `.\mvnw.cmd clean` (clear once before starting)
-7. run `.\mvnw.cmd package` (just to ensure that the application is built correctly)
-8. run `.\mvnw.cmd spring-boot:run` (to start the application)
-9. Test using the Postman in the folder `4) Postman`
+5. run `.\mvnw.cmd clean` (clear once before starting)
+6. run `.\mvnw.cmd package` (just to ensure that the application is built correctly)
+7. run `.\mvnw.cmd spring-boot:run` (to start the application)
+8. Test using the Postman in the folder `4) Postman`
