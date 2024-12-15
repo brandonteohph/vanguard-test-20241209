@@ -1,4 +1,4 @@
-package com.vanguard.test.model;
+package com.vanguard.test.model.jpa;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -6,8 +6,6 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Locale;
-import java.util.TimeZone;
 
 @JsonPropertyOrder(
         {

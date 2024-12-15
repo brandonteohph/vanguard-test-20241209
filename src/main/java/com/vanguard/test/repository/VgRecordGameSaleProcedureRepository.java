@@ -1,11 +1,10 @@
 package com.vanguard.test.repository;
 
-import com.vanguard.test.model.VgRecordGameSale;
+import com.vanguard.test.model.jpa.VgRecordGameSale;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Date;

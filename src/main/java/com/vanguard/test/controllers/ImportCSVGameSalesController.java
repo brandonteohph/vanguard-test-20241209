@@ -1,9 +1,9 @@
 package com.vanguard.test.controllers;
 
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.vanguard.test.model.VgRecordCsvUpload;
-import com.vanguard.test.model.VgRecordGameSale;
-import com.vanguard.test.model.VgRecordGameSale_CSV;
+import com.vanguard.test.model.jpa.VgRecordCsvUpload;
+import com.vanguard.test.model.jpa.VgRecordGameSale;
+import com.vanguard.test.model.jpa.VgRecordGameSale_CSV;
 import com.vanguard.test.repository.VgRecordCsvUploadRepository;
 import com.vanguard.test.repository.VgRecordGameSaleRepository;
 import jakarta.validation.Valid;

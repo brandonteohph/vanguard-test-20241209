@@ -1,6 +1,6 @@
 package com.vanguard.test.repository;
 
-import com.vanguard.test.model.VgRecordCsvUpload;
+import com.vanguard.test.model.jpa.VgRecordCsvUpload;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

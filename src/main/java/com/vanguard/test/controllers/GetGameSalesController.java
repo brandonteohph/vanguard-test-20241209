@@ -1,9 +1,8 @@
 package com.vanguard.test.controllers;
 
-import com.vanguard.test.model.VgRecordGameSale;
+import com.vanguard.test.model.jpa.VgRecordGameSale;
 import com.vanguard.test.model.enums.PriceModeToggle;
 import com.vanguard.test.repository.VgRecordGameSaleProcedureRepository;
-import com.vanguard.test.repository.VgRecordGameSaleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;

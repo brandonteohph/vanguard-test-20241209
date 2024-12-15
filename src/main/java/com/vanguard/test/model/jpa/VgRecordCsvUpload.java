@@ -1,4 +1,4 @@
-package com.vanguard.test.model;
+package com.vanguard.test.model.jpa;
 
 import jakarta.persistence.*;
 import lombok.Data;
